@@ -7,7 +7,7 @@ CFLAGS = -O -Wall -fno-pic -march=rv64g -mabi=lp64d -nostdlib -nostartfiles
 
 all: kernel.bin
 
-kernel.elf: entry.S main.c page.c proc.c trap.c kernelvec.S printf.c mm/vm.c mm/vm_test.c switch.S syscall.c linker.ld
+kernel.elf: entry.S main.c page.c proc.c trap.c kernelvec.S printf.c mm/vm.c mm/vm_test.c switch.S syscall.c lib/string.c linker.ld
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c entry.S -o entry.o
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c page.c -o page.o
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c proc.c -o proc.o
@@ -19,7 +19,9 @@ kernel.elf: entry.S main.c page.c proc.c trap.c kernelvec.S printf.c mm/vm.c mm/
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c syscall.c -o syscall.o
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c mm/vm.c -o mm/vm.o
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c mm/vm_test.c -o mm/vm_test.o
-	$(LD) -T linker.ld entry.o main.o page.o proc.o trap.o kernelvec.o printf.o mm/vm.o mm/vm_test.o switch.o syscall.o -o kernel.elf
+	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c lib/string.c -o lib/string.o
+
+	$(LD) -T linker.ld entry.o main.o page.o proc.o trap.o kernelvec.o printf.o mm/vm.o mm/vm_test.o switch.o syscall.o lib/string.o -o kernel.elf
 
 # kernel.elf: entry.S main.c page.c proc.c trap.c kernelvec.S printf.c mm/vm.c linker.ld
 # 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c entry.S -o entry.o

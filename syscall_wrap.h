@@ -37,3 +37,18 @@ static inline void sys_yield(void)
 {
     __syscall(SYS_yield, 0, 0, 0, 0, 0, 0);
 }
+
+static inline unsigned long sys_getpid(void)
+{
+    return __syscall(SYS_getpid, 0, 0, 0, 0, 0, 0);
+}
+
+static inline unsigned long sys_fork(void)
+{
+    return __syscall(SYS_fork, 0, 0, 0, 0, 0, 0);
+}
+
+static inline unsigned long sys_wait(int *status)
+{
+    return __syscall(SYS_wait, (unsigned long)status, 0, 0, 0, 0, 0);
+}

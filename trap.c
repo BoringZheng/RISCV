@@ -9,6 +9,12 @@ static unsigned long sys_exit_impl(unsigned long, unsigned long, unsigned long,
                                     unsigned long, unsigned long, unsigned long);
 static unsigned long sys_yield_impl(unsigned long, unsigned long, unsigned long,
                                       unsigned long, unsigned long, unsigned long);
+static unsigned long sys_getpid_impl(unsigned long, unsigned long, unsigned long,
+                                      unsigned long, unsigned long, unsigned long);
+static unsigned long sys_fork_impl(unsigned long, unsigned long, unsigned long,
+                                      unsigned long, unsigned long, unsigned long);
+static unsigned long sys_wait_impl(unsigned long, unsigned long, unsigned long,
+                                      unsigned long, unsigned long, unsigned long);
 
 static unsigned long (*sys_table[NR_SYSCALLS])(unsigned long, unsigned long, unsigned long,
                                     unsigned long, unsigned long, unsigned long) = 
@@ -16,6 +22,9 @@ static unsigned long (*sys_table[NR_SYSCALLS])(unsigned long, unsigned long, uns
     sys_write_impl,
     sys_exit_impl,
     sys_yield_impl,
+    sys_getpid_impl,
+    sys_fork_impl,
+    sys_wait_impl,
 };
 
 void trap_handler(void);
