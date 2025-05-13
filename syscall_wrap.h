@@ -1,0 +1,39 @@
+#pragma once
+#include "syscall.h"
+
+static inline long __syscall(unsigned long num,
+                             unsigned long a0, unsigned long a1, unsigned long a2,
+                             unsigned long a3, unsigned long a4, unsigned long a5)
+{
+    register unsigned long a7 asm("a7") = num;
+    register unsigned long a0 asm("a0") = a0;
+    register unsigned long a1 asm("a1") = a1;
+    register unsigned long a2 asm("a2") = a2;
+    register unsigned long a3 asm("a3") = a3;
+    register unsigned long a4 asm("a4") = a4;
+    register unsigned long a5 asm("a5") = a5;
+
+    asm volatile(
+        "ecall"
+        : "+r"(a0), "+r"(a1), "+r"(a2), "+r"(a3), "+r"(a4), "+r"(a5)
+        : "r"(a7)
+        : "memory");
+
+    return a0;
+}
+
+static inline long sys_write(const char *buf, unsigned long len)
+{
+    return __syscall(SYS_write, (unsigned long)buf, len, 0, 0, 0, 0);
+}
+
+static inline void sys_exit(int code)
+{
+    __syscall(SYS_exit, code, 0, 0, 0, 0, 0);
+    while(1) asm volatile("wfi");
+}
+
+static inline void sys_yield(void)
+{
+    __syscall(SYS_yield, 0, 0, 0, 0, 0, 0);
+}
