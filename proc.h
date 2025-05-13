@@ -3,6 +3,9 @@
 
 #include "types.h"  // 一定放在最顶部！
 
+extern volatile int need_sched;
+
+
 typedef enum { UNUSED, RUNNING, SLEEPING } proc_state;
 
 struct context

@@ -16,7 +16,7 @@ kernel.elf: entry.S main.c page.c proc.c trap.c kernelvec.S printf.c mm/vm.c mm/
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c kernelvec.S -o kernelvec.o
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c printf.c -o printf.o
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c switch.S -o switch.o
-	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c syscall.S -o syscall.o
+	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c syscall.c -o syscall.o
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c mm/vm.c -o mm/vm.o
 	$(CC) $(CFLAGS) -mcmodel=medany -ffreestanding -c mm/vm_test.c -o mm/vm_test.o
 	$(LD) -T linker.ld entry.o main.o page.o proc.o trap.o kernelvec.o printf.o mm/vm.o mm/vm_test.o switch.o syscall.o -o kernel.elf

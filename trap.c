@@ -79,7 +79,9 @@ void trap_handler()
     }
     else if (is_interrupt && cause_code == 7)
     {
-        yield();
+        *(volatile unsigned long *)(CLINT_MTIMECMP) = *(volatile unsigned long *)(CLINT_MTIME) + INTERVAL;
+        extern volatile int need_sched;
+        need_sched = 1;
     }
     else
     {

@@ -5,18 +5,18 @@ static inline long __syscall(unsigned long num,
                              unsigned long a0, unsigned long a1, unsigned long a2,
                              unsigned long a3, unsigned long a4, unsigned long a5)
 {
-    register unsigned long a7 asm("a7") = num;
-    register unsigned long a0 asm("a0") = a0;
-    register unsigned long a1 asm("a1") = a1;
-    register unsigned long a2 asm("a2") = a2;
-    register unsigned long a3 asm("a3") = a3;
-    register unsigned long a4 asm("a4") = a4;
-    register unsigned long a5 asm("a5") = a5;
+    register unsigned long _a7 asm("a7") = num;
+    register unsigned long _a0 asm("a0") = a0;
+    register unsigned long _a1 asm("a1") = a1;
+    register unsigned long _a2 asm("a2") = a2;
+    register unsigned long _a3 asm("a3") = a3;
+    register unsigned long _a4 asm("a4") = a4;
+    register unsigned long _a5 asm("a5") = a5;
 
     asm volatile(
         "ecall"
-        : "+r"(a0), "+r"(a1), "+r"(a2), "+r"(a3), "+r"(a4), "+r"(a5)
-        : "r"(a7)
+        : "+r"(_a0), "+r"(_a1), "+r"(_a2), "+r"(_a3), "+r"(_a4), "+r"(_a5)
+        : "r"(_a7)
         : "memory");
 
     return a0;

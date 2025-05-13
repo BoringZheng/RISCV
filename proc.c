@@ -1,5 +1,8 @@
 #include "proc.h"
+#include "syscall_wrap.h"
 #include "printf.h"
+
+volatile int need_sched = 0;
 
 struct proc procs[NPROC];
 struct proc *current_proc;
@@ -14,7 +17,10 @@ void process_a()
 {
     while (1) {
         sys_write("syscall A\n", 12);
-        sys_yield();
+        if (need_sched) {
+            need_sched = 0;
+            yield();                 /* 现在是普通函数栈，安全 */
+        }
     }
 }
 
@@ -22,7 +28,10 @@ void process_b()
 {
     while (1) {
         sys_write("syscall B\n", 12);
-        sys_yield();
+        if (need_sched) {
+            need_sched = 0;
+            yield();                 /* 现在是普通函数栈，安全 */
+        }
     }
 }
 
@@ -68,7 +77,7 @@ static __attribute__((aligned(16))) char kstack2[4096];
 void proc_init() 
 {
     procs[0].pid = 0;
-    procs[0].state = RUNNING;
+    procs[0].state = UNUSED;
     procs[0].context.ra = (uint64_t)proc0_run;
     procs[0].context.sp = (uint64_t)(kstack0 + 4096);
     procs[0].kstack = (uint64_t)kstack0;
